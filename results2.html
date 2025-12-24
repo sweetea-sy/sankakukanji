@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hasil Latihan - "一"</title>
+
+<style>
+  :root{
+    --shadow: 0 18px 55px rgba(0,0,0,.18);
+    --stroke:#111;
+    --brown:#8a7566;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    height:100vh;
+    display:grid;
+    place-items:center;
+    background:#f2f4f7;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow:hidden;
+    padding:18px 16px;
+  }
+
+  .phone{
+    width:min(420px,92vw);
+    height:calc(100vh - 36px);
+    max-height:920px;
+    border-radius:34px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    background:#fff;
+    position:relative;
+  }
+
+  .bg{
+    position:absolute; inset:0;
+    background:url("sankaku.png") center/cover no-repeat;
+  }
+
+  .layer{
+    position:absolute; inset:0;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .top-gap{ height: 18px; flex:0 0 auto; }
+
+  .panel{
+    background: rgba(255,255,255,.96);
+    flex: 1 1 auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    padding: 14px 16px 10px;
+  }
+
+  .title{
+    font-weight: 1000;
+    font-size: 22px;
+    margin: 6px 0 10px;
+    text-align:center;
+  }
+
+  .meta{
+    text-align:center;
+    font-weight:900;
+    margin-bottom: 10px;
+  }
+
+  .list{
+    flex:1 1 auto;
+    min-height:0;
+    overflow:auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 2px;
+    border: 2px solid rgba(0,0,0,.15);
+    border-radius: 14px;
+  }
+
+  .row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 10px 12px;
+    border-top:1px solid rgba(0,0,0,.12);
+    gap: 10px;
+  }
+  .row:first-child{ border-top:0; }
+
+  .row-left{
+    font-weight: 900;
+  }
+  .row-right{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    font-weight: 900;
+  }
+
+  .pill{
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 2px solid rgba(0,0,0,.18);
+    font-size: 12px;
+    white-space:nowrap;
+  }
+
+  .badge{
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display:grid;
+    place-items:center;
+    font-weight: 1000;
+    border: 2px solid #111;
+    background:#fff;
+  }
+  .badge.ok{
+    border-color: rgba(0,0,0,.2);
+    background: rgba(34,197,94,.15);
+  }
+  .badge.no{
+    border-color: rgba(0,0,0,.2);
+    background: rgba(239,68,68,.15);
+  }
+  .badge.na{
+    border-color: rgba(0,0,0,.15);
+    background: rgba(0,0,0,.05);
+  }
+
+  .footer{
+    padding: 10px 0 0;
+    flex: 0 0 auto;
+  }
+
+  .divider{
+    height:1px;
+    background: rgba(0,0,0,.25);
+    width:70%;
+    margin: 8px auto 8px;
+  }
+  .footer-text{
+    text-align:center;
+    font-weight:900;
+    font-size:14px;
+    margin: 0 0 4px;
+  }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    margin-top: 10px;
+  }
+  .btn{
+    flex:1;
+    padding: 12px 12px;
+    border-radius: 10px;
+    border: 2px solid #111;
+    background:#fff;
+    font-weight: 1000;
+    cursor:pointer;
+    box-shadow: 0 8px 0 rgba(0,0,0,.55);
+  }
+  .btn:active{ transform: translateY(3px); box-shadow: 0 5px 0 rgba(0,0,0,.55); }
+
+  @media (max-width: 768px) {
+  body{
+    padding: 0;
+    background: #000; 
+  }
+
+  .phone{
+    width: 100vw;
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="phone">
+  <div class="bg" aria-hidden="true"></div>
+
+  <div class="layer">
+    <div class="top-gap"></div>
+
+    <div class="panel">
+      <div class="title">HASIL LATIHAN "一" </div>
+      <div class="meta" id="meta">...</div>
+
+      <div class="list" id="list"></div>
+
+      <div class="actions">
+        <button class="btn" id="btnRetry">Ulangi</button>
+        <button class="btn" id="btnHome">Home</button>
+      </div>
+
+      <div class="footer">
+        <div class="divider"></div>
+        <div class="footer-text">N3 Nihongo Sou Matome</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const QUESTIONS = [
+  {
+    text: 'ご協力ありがとうございます。',
+    options: ['きょうりょく','まもりょく','こりょく','こうりょく'],
+    correctIndex: 0
+  },
+  {
+    text: '日本語がわからなくて困っています。',
+    options: ['くまって','こまって','よわって','さがして'],
+    correctIndex: 1
+  },
+  {
+    text: '手伝ってくれませんか。',
+    options: ['たすけて','てつだって','ことづかって','つたえて'],
+    correctIndex: 1
+  },
+  {
+    text: '美術館に絵を見に行きました。',
+    options: ['ぶじゅつかん','ぎじゅつかん','びじゅつかん','しゅじゅつかん'],
+    correctIndex: 2
+  },
+  {
+    text: '空港は安全です。',
+    options: ['くうこう','くうきゅう','こうきょう','こうこう'],
+    correctIndex: 0
+  },
+  {
+    text: '京都に金閣寺という有名なお寺があります。',
+    options: ['じ','ぎ','に','ち'],
+    correctIndex: 0
+  },
+  {
+    text: '地震に備えていろいろなことをしています。',
+    options: ['じかん','そろえて','おさえて','そなえて'],
+    correctIndex: 3
+  },
+  {
+  text: 'インフルエンザを予防する。',
+  options: ['ゆうぼう','ようぼう','ゆぼう','よぼう'],
+  correctIndex: 3
+},
+{
+  text: '消しゴムを貸してくれませんか。',
+  options: ['きして','けして','かして','さして'],
+  correctIndex: 2
+},
+{
+  text: '危ないですから、黄色い線の内側に下がってお待ちください。',
+  options: ['うちがわ','ないがわ','そとか','うしがわ'],
+  correctIndex: 0
+},
+{
+  text: '友達を助けるのはあたりまえのことです。',
+  options: ['光たり前','当たり前','値たり前','面たり前'],
+  correctIndex: 1
+},
+{
+  text: '富士山のかたちは美しい。',
+  options: ['形','骨','段','煙'],
+  correctIndex: 0
+},
+{
+  text: 'ただ今、じゅんびちゅうです。',
+  options: ['予約中','営業中','閉店中','準備中'],
+  correctIndex: 3
+},
+{
+  text: 'さいふをひろったので、けいさつにとどけます。',
+  options: ['交番','消防','警察','観光'],
+  correctIndex: 2
+},
+{
+  text: '（　）駅では禁煙となっています。',
+  options: ['本','今','御','当'],
+  correctIndex: 3
+},
+{
+  text: 'この電車は（　）席、指定です。',
+  options: ['満','空','全','次'],
+  correctIndex: 2
+},
+{
+  text: '交差点（　）に車を止めてはいけません。',
+  options: ['向','側','線','内'],
+  correctIndex: 3
+},
+{
+  text: '産婦人（　）の受付をする。',
+  options: ['科','化','係','局'],
+  correctIndex: 0
+},
+{
+  text: '私は A（　）に賛成です。',
+  options: ['番','券','条','段'],
+  correctIndex: 2
+},
+{
+  text: 'この町の人口は（　）20万人です。',
+  options: ['各','現','過','約'],
+  correctIndex: 3
+}
+
+
+];
+
+  const LS_KEY_ANS = 'sankaku_quiz_type1_answers';
+  const LS_KEY_IDX = 'sankaku_quiz_type1_index';
+
+  function loadAnswers(){
+    try {
+      return JSON.parse(localStorage.getItem(LS_KEY_ANS) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  const answers = loadAnswers();
+  const listEl = document.getElementById('list');
+
+  /* =========================
+     HITUNG TOTAL NILAI
+     ========================= */
+  let totalScore = 0;
+  QUESTIONS.forEach((_, i) => {
+    if (answers[i]?.correct) totalScore += 5;
+  });
+
+  document.getElementById('meta').textContent =
+    `Jumlah Soal: ${QUESTIONS.length} | Total Nilai: ${totalScore}`;
+
+  QUESTIONS.forEach((_, i) => {
+    const data = answers[i];
+    const score = data?.correct ? 5 : 0;
+
+    let status = 'na';
+    if (data?.correct) status = 'ok';
+    else if (data) status = 'no';
+
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    const left = document.createElement('div');
+    left.className = 'row-left';
+    left.textContent = `${i + 1}.`;
+
+    const right = document.createElement('div');
+    right.className = 'row-right';
+
+    const pillScore = document.createElement('div');
+    pillScore.className = 'pill';
+    pillScore.textContent = `Nilai: ${score}`;
+
+    const badge = document.createElement('div');
+    badge.className = `badge ${status}`;
+    badge.textContent = data?.correct ? '✓' : data ? '✕' : '–';
+
+    right.appendChild(pillScore);
+    right.appendChild(badge);
+
+    row.appendChild(left);
+    row.appendChild(right);
+
+    listEl.appendChild(row);
+  });
+
+
+  document.getElementById('btnRetry').addEventListener('click', () => {
+    localStorage.removeItem(LS_KEY_ANS);
+    localStorage.removeItem(LS_KEY_IDX);
+    window.location.href = 'quiz-type-2.html';
+  });
+
+  document.getElementById('btnHome').addEventListener('click', () => {
+    window.location.href = 'menu.html';
+  });
+</script>
+
+</body>
+</html>

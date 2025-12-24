@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latihan Soal - "二"</title>
+
+<style>
+:root{
+  --shadow:0 18px 55px rgba(0,0,0,.18);
+  --stroke:#111;
+  --brown:#8a7566;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+
+body{
+  height:100vh;
+  display:grid;
+  place-items:center;
+  background:#f2f4f7;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  overflow:hidden;
+  padding:18px 16px;
+}
+
+.phone{
+  width:min(420px,92vw);
+  height:calc(100vh - 36px);
+  max-height:920px;
+  border-radius:34px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  background:#fff;
+  position:relative;
+}
+
+.bg{
+  position:absolute;
+  inset:0;
+  background:url("sankaku.png") center/cover no-repeat;
+}
+
+.layer{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.top-gap{
+  height:14px;
+  flex:0 0 auto;
+}
+
+.panel{
+  background:rgba(138,117,102,.92);
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  padding:14px 16px 10px;
+}
+
+.qnum{
+  color:#fff;
+  font-weight:900;
+  font-size:20px;
+  margin-bottom:6px;
+}
+
+.question{
+  color:#fff;
+  font-weight:900;
+  font-size:clamp(22px,6vw,30px);
+  line-height:1.25;
+  margin-bottom:14px;
+}
+
+.choices{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  overflow:auto;
+  padding-bottom:10px;
+}
+
+.choice{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+}
+
+.badge{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:20px;
+  flex-shrink:0;
+}
+
+.text{
+  color:#fff;
+  font-weight:900;
+  font-size:clamp(18px,5vw,26px);
+  line-height:1.2;
+}
+
+.choice.is-selected .badge{
+  box-shadow:0 0 0 4px rgba(255,255,255,.25);
+}
+
+.bottom-area{
+  height:96px;
+  flex:0 0 auto;
+  position:relative;
+}
+
+.back-btn{
+  position:absolute;
+  left:16px;
+  bottom:16px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:2.5px solid #111;
+  background:rgba(255,255,255,.35);
+  display:grid;
+  place-items:center;
+  z-index:4;
+}
+
+.back-btn svg{
+  width:26px;
+  height:26px;
+  stroke:#111;
+  stroke-width:2.8;
+  fill:none;
+}
+
+.nav-arrows{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 18px 0 88px;
+}
+
+.arrow{
+  width:100px;
+  height:52px;
+  background:rgba(0,0,0,.75);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.arrow svg{
+  width:38px;
+  height:38px;
+  stroke:#fff;
+  stroke-width:3;
+  fill:none;
+}
+
+.arrow.is-disabled{
+  opacity:.35;
+  pointer-events:none;
+}
+
+.arrow-label{
+  position:absolute;
+  bottom:4px;
+  right:18px;
+  color:#fff;
+  font-weight:900;
+  font-size:11px;
+  letter-spacing:.6px;
+}
+
+.arrow-label.left{
+  left:88px;
+  right:auto;
+}
+
+.result-overlay{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+}
+
+.result-overlay.is-show{display:flex}
+
+.result-panel{
+  width:calc(100% - 32px);
+  max-width:340px;
+  height:52%;
+  background:rgba(255,255,255,.96);
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow);
+}
+
+.result-img{
+  width:70%;
+  max-width:220px;
+}
+
+@media (max-width:768px){
+  body{
+    padding:0;
+    background:#000;
+  }
+  .phone{
+    width:100vw;
+    height:100dvh;
+    max-height:none;
+    border-radius:0;
+    box-shadow:none;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="phone">
+  <div class="bg"></div>
+
+  <div class="layer">
+    <div class="top-gap"></div>
+
+    <div class="panel">
+      <div class="qnum" id="qnum">1.</div>
+      <div class="question" id="question">...</div>
+      <div class="choices" id="choices"></div>
+    </div>
+
+    <div class="bottom-area">
+      <button class="back-btn" id="btnBack">
+        <svg viewBox="0 0 24 24">
+          <path d="M19 12H7"></path>
+          <path d="M11 6l-6 6 6 6"></path>
+        </svg>
+      </button>
+
+      <div class="nav-arrows">
+        <div class="arrow" id="btnPrev">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 12H7"></path>
+            <path d="M11 6l-6 6 6 6"></path>
+          </svg>
+        </div>
+
+        <div class="arrow" id="btnNext">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 12h12"></path>
+            <path d="M13 6l6 6-6 6"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="arrow-label left" id="lblPrev">PREV</div>
+      <div class="arrow-label" id="lblNext">NEXT</div>
+    </div>
+
+    <div class="result-overlay" id="resultOverlay">
+      <div class="result-panel">
+        <img id="resultImg" class="result-img" src="" alt="hasil">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const IMG_WRONG   = 'wrong.webp';
+  const IMG_CORRECT = 'correct.webp';
+
+
+const QUESTIONS = [
+  {
+    text: 'ご協力ありがとうございます。',
+    options: ['きょうりょく','まもりょく','こりょく','こうりょく'],
+    correctIndex: 0
+  },
+  {
+    text: '日本語がわからなくて困っています。',
+    options: ['くまって','こまって','よわって','さがして'],
+    correctIndex: 1
+  },
+  {
+    text: '手伝ってくれませんか。',
+    options: ['たすけて','てつだって','ことづかって','つたえて'],
+    correctIndex: 1
+  },
+  {
+    text: '美術館に絵を見に行きました。',
+    options: ['ぶじゅつかん','ぎじゅつかん','びじゅつかん','しゅじゅつかん'],
+    correctIndex: 2
+  },
+  {
+    text: '空港は安全です。',
+    options: ['くうこう','くうきゅう','こうきょう','こうこう'],
+    correctIndex: 0
+  },
+  {
+    text: '京都に金閣寺という有名なお寺があります。',
+    options: ['じ','ぎ','に','ち'],
+    correctIndex: 0
+  },
+  {
+    text: '地震に備えていろいろなことをしています。',
+    options: ['じかん','そろえて','おさえて','そなえて'],
+    correctIndex: 3
+  },
+  {
+  text: 'インフルエンザを予防する。',
+  options: ['ゆうぼう','ようぼう','ゆぼう','よぼう'],
+  correctIndex: 3
+},
+{
+  text: '消しゴムを貸してくれませんか。',
+  options: ['きして','けして','かして','さして'],
+  correctIndex: 2
+},
+{
+  text: '危ないですから、黄色い線の内側に下がってお待ちください。',
+  options: ['うちがわ','ないがわ','そとか','うしがわ'],
+  correctIndex: 0
+},
+{
+  text: '友達を助けるのはあたりまえのことです。',
+  options: ['光たり前','当たり前','値たり前','面たり前'],
+  correctIndex: 1
+},
+{
+  text: '富士山のかたちは美しい。',
+  options: ['形','骨','段','煙'],
+  correctIndex: 0
+},
+{
+  text: 'ただ今、じゅんびちゅうです。',
+  options: ['予約中','営業中','閉店中','準備中'],
+  correctIndex: 3
+},
+{
+  text: 'さいふをひろったので、けいさつにとどけます。',
+  options: ['交番','消防','警察','観光'],
+  correctIndex: 2
+},
+{
+  text: '（　）駅では禁煙となっています。',
+  options: ['本','今','御','当'],
+  correctIndex: 3
+},
+{
+  text: 'この電車は（　）席、指定です。',
+  options: ['満','空','全','次'],
+  correctIndex: 2
+},
+{
+  text: '交差点（　）に車を止めてはいけません。',
+  options: ['向','側','線','内'],
+  correctIndex: 3
+},
+{
+  text: '産婦人（　）の受付をする。',
+  options: ['科','化','係','局'],
+  correctIndex: 0
+},
+{
+  text: '私は A（　）に賛成です。',
+  options: ['番','券','条','段'],
+  correctIndex: 2
+},
+{
+  text: 'この町の人口は（　）20万人です。',
+  options: ['各','現','過','約'],
+  correctIndex: 3
+}
+
+
+];
+
+
+  const LS_KEY_ANS = 'sankaku_quiz_type1_answers';
+  const LS_KEY_IDX = 'sankaku_quiz_type1_index';
+
+  function loadAnswers(){
+    try {
+      return JSON.parse(localStorage.getItem(LS_KEY_ANS) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function saveAnswers(obj){
+    localStorage.setItem(LS_KEY_ANS, JSON.stringify(obj));
+  }
+
+  function loadIndex(){
+    const n = parseInt(localStorage.getItem(LS_KEY_IDX) || '0', 10);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function saveIndex(i){
+    localStorage.setItem(LS_KEY_IDX, String(i));
+  }
+
+  const elQnum = document.getElementById('qnum');
+  const elQuestion = document.getElementById('question');
+  const elChoices = document.getElementById('choices');
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+  const lblNext = document.getElementById('lblNext');
+  const overlay = document.getElementById('resultOverlay');
+  const resultImg = document.getElementById('resultImg');
+
+  let currentIndex = loadIndex();
+
+  let answers = loadAnswers();
+  let lockNav = false;
+
+  function hideOverlay(){
+    overlay.classList.remove('is-show');
+    resultImg.src = '';
+    lockNav = false;
+  }
+
+  function showOverlay(isCorrect, cb){
+    lockNav = true;
+    overlay.classList.add('is-show');
+    resultImg.src = isCorrect ? IMG_CORRECT : IMG_WRONG;
+
+    setTimeout(() => {
+      hideOverlay();
+      cb && cb();
+    }, 650);
+  }
+
+  function render(){
+    const q = QUESTIONS[currentIndex];
+    elQnum.textContent = (currentIndex + 1) + '.';
+    elQuestion.textContent = q.text;
+
+    elChoices.innerHTML = '';
+
+    const chosen = answers[currentIndex]?.chosen;
+
+    q.options.forEach((opt, i) => {
+      const row = document.createElement('div');
+      row.className = 'choice' + (chosen === i ? ' is-selected' : '');
+      row.innerHTML = `
+        <div class="badge">${i+1}</div>
+        <div class="text">${opt}</div>
+      `;
+
+      row.onclick = () => {
+        answers[currentIndex] ??= { attempts: 0, correct: false };
+        answers[currentIndex].chosen = i;
+        saveAnswers(answers);
+        render();
+      };
+
+      elChoices.appendChild(row);
+    });
+
+    btnPrev.classList.toggle('is-disabled', currentIndex === 0);
+    lblNext.textContent =
+      currentIndex === QUESTIONS.length - 1 ? 'SELESAI' : 'NEXT';
+
+    saveIndex(currentIndex);
+  }
+
+  btnPrev.onclick = () => {
+    if (lockNav || currentIndex === 0) return;
+    currentIndex--;
+    render();
+  };
+
+  btnNext.onclick = () => {
+    if (lockNav) return;
+
+    const q = QUESTIONS[currentIndex];
+    const data = answers[currentIndex];
+
+    if (!data || typeof data.chosen !== 'number') {
+      showOverlay(false);
+      return;
+    }
+
+    if (!data.correct) data.attempts++;
+
+    const isCorrect = data.chosen === q.correctIndex;
+
+    if (isCorrect) data.correct = true;
+
+    saveAnswers(answers);
+
+    showOverlay(isCorrect, () => {
+      if (!isCorrect) return;
+
+      if (currentIndex < QUESTIONS.length - 1) {
+        currentIndex++;
+        render();
+      } else {
+        window.location.href = 'results2.html';
+      }
+    });
+  };
+
+  document.getElementById('btnBack').onclick = () => {
+    window.location.href = 'quiz.html';
+  };
+
+  render();
+</script>
+</body>
+</html>
+
+</body>
+</html>

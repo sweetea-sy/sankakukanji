@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daftar Kanji</title>
+  <style>
+    :root{
+      --tile:#8a7566;
+      --tileActive:#6f5a4c;
+      --stroke:#111;
+      --shadow: 0 18px 55px rgba(0,0,0,.18);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#f2f4f7;
+      height:100vh;
+      overflow:hidden; /* page tidak scroll */
+      display:grid;
+      place-items:center;
+      padding:18px 16px;
+    }
+
+    .phone{
+      width:min(420px, 92vw);
+      height: calc(100vh - 36px);
+      max-height: 900px;
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      background:#fff;
+    }
+
+    /* ✅ BACKGROUND SATU (kayu full) */
+    .bg{
+      position:absolute; inset:0;
+      background: url("sankaku.png") center/cover no-repeat;
+    }
+
+    .layer{
+      position:absolute; inset:0;
+      display:flex;
+      flex-direction:column;
+      min-height:0; /* ✅ penting untuk scroll area anak */
+    }
+
+    /* HEADER */
+    .header{
+      height: 155px;
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding: 18px 16px 14px;
+      flex: 0 0 auto;
+    }
+    .title-pill{
+      background:#fff;
+      border:2px solid #000;
+      border-radius: 12px;
+      padding:10px 18px;
+      font-weight:900;
+      letter-spacing:.6px;
+      box-shadow: 0 8px 0 rgba(0,0,0,.55);
+    }
+    .slash{
+      position:absolute;
+      left:14px;
+      top:46px;
+      width:26px;
+      height:26px;
+      border-left:2px solid rgba(0,0,0,.35);
+      transform:skewX(-20deg);
+      opacity:.55;
+    }
+
+    /* PANEL PUTIH */
+    .panel{
+      background: rgba(255,255,255,.96);
+      flex: 1 1 auto;
+      display:flex;
+      flex-direction:column;
+
+      padding: 18px 16px 12px;
+
+      min-height:0; /* ✅ kunci: biar grid-wrap bisa scroll */
+    }
+
+    /* ✅ SCROLL HANYA DI SINI */
+    .grid-wrap{
+      flex: 1 1 auto;
+      min-height:0;             /* ✅ penting */
+      overflow-y:auto;          /* ✅ scroll aktif */
+      -webkit-overflow-scrolling: touch;
+      padding-right: 2px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap:14px;
+    }
+
+    .tile{
+      aspect-ratio: 1/1;
+      border:none;
+      border-radius: 14px;
+      background: var(--tile);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:26px;
+      font-weight:900;
+      color:#fff;
+      transition: background .15s, transform .08s;
+    }
+    .tile:active{ transform: scale(.97); }
+    .tile.is-active{ background: var(--tileActive); }
+
+
+    .tile{
+      position: relative;
+      transform: translateZ(0);
+      transition: background .18s ease, transform .12s ease, box-shadow .18s ease, filter .18s ease;
+    }
+
+    .tile:active{
+      transform: scale(.96);
+      filter: brightness(.95);
+    }
+
+    .tile.is-last{
+      background: var(--tileActive);
+      box-shadow: 0 10px 18px rgba(0,0,0,.18);
+      animation: pop .22s ease-out;
+    }
+
+    .tile.is-last::after{
+      content:"";
+      position:absolute;
+      inset:-4px;
+      border-radius: 18px;
+      border: 2px solid rgba(255,255,255,.35);
+      pointer-events:none;
+    }
+
+    @keyframes pop{
+      0%{ transform: scale(.92); }
+      100%{ transform: scale(1); }
+    }
+
+
+    /* NAV: NEMPEL BAWAH */
+    .nav{
+      margin-top:auto; 
+      padding: 10px 0 0;
+    }
+    .home-btn{
+      width:72px;height:72px;
+      margin: 0 auto;
+      display:grid;
+      place-items:center;
+      background: transparent;
+      border:none;
+      cursor:pointer;
+      padding:0;
+    }
+    .home-btn svg{
+      width:72px;height:72px;
+      stroke: var(--stroke);
+      stroke-width:2.6;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(0,0,0,.25);
+      width:70%;
+      margin: 8px auto 8px;
+    }
+
+    .footer-text{
+      text-align:center;
+      font-weight:800;
+      font-size:14px;
+      margin: 0 0 4px;
+    }
+    @media (max-width: 768px) {
+  body{
+    padding: 0;
+    background: #000; 
+  }
+
+  .phone{
+    width: 100vw;
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+  </style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="bg" aria-hidden="true"></div>
+
+  <div class="layer">
+    <div class="header">
+      <div class="slash" aria-hidden="true"></div>
+      <div class="title-pill">DAFTAR KANJI</div>
+    </div>
+
+    <div class="panel">
+      <div class="grid-wrap" id="gridWrap">
+        <div class="grid" id="grid"></div>
+      </div>
+
+      <div class="nav">
+        <button class="home-btn" id="btnHome" aria-label="Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10.5L12 3l9 7.5"></path>
+            <path d="M6.5 10.5V21h11V10.5"></path>
+            <path d="M10 21v-6h4v6"></path>
+          </svg>
+        </button>
+
+        <div class="divider"></div>
+        <div class="footer-text">N3 Nihongo Sou Matome</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = "sankaku_kanji_state_v1";
+
+  const kanjiList = [
+    "駐","無","満","向","禁",
+    "関","係","断","横","押",
+    "式","信","号","確","認",
+    "飛","非","常","階","段",
+    "箱","危","険","捨","線",
+    "面","普","各","次","快",
+    "速","過","鉄","指","定",
+    "席","由","番","窓","側",
+    "路","停","整","券","現",
+    "両","替","優","座","降",
+
+    "未","未","若","晩","島",
+    "皿","血","助","準","備",
+    "営","閉","案","内","予",
+    "約","煙","当","全","客",
+    "様","解","協","願","観",
+
+    "園","港","遊","美","術",
+    "神","寺","役","郵","局",
+    "交","差","点","橋","公",
+    "受","付","科","鼻","婦",
+    "形","骨","折","困","消",
+    "防","救","警","察","故",
+    "伝"
+  ];
+
+  const grid = document.getElementById('grid');
+  const gridWrap = document.getElementById('gridWrap');
+
+  // ---------- restore state ----------
+  function loadState(){
+    try{
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    }catch(e){
+      return {};
+    }
+  }
+  function saveState(next){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  }
+
+  const state = loadState();
+
+  // ---------- render tiles ----------
+  const tileEls = [];
+
+  kanjiList.forEach((k, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'tile';
+    btn.type = 'button';
+    btn.textContent = k;
+
+    btn.addEventListener('click', () => {
+      saveState({
+        lastIndex: idx,
+        scrollTop: gridWrap.scrollTop
+      });
+
+      btn.classList.add('is-last');
+
+      const pageNumber = idx + 1;
+      window.location.href = `kanji/kanji${pageNumber}.html`;
+    });
+
+    tileEls.push(btn);
+    grid.appendChild(btn);
+  });
+
+  if (typeof state.lastIndex === "number" && tileEls[state.lastIndex]) {
+    tileEls[state.lastIndex].classList.add("is-last");
+  }
+
+  if (typeof state.scrollTop === "number") {
+    requestAnimationFrame(() => {
+      gridWrap.scrollTop = state.scrollTop;
+    });
+  }
+
+  document.getElementById('btnHome').addEventListener('click', () => {
+    saveState({ lastIndex: null, scrollTop: 0 });
+    window.location.href = 'menu.html';
+  });
+</script>
+
+
+</body>
+</html>

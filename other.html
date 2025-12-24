@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SANKAKU - Intro</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      height:100vh;
+      display:grid;
+      place-items:center;
+      background:#e9edf2;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    .phone{
+      width:min(420px, 92vw);
+      height: calc(100vh - 36px);
+      max-height: 920px;
+      border-radius: 34px;
+      overflow:hidden;
+      position:relative;
+      box-shadow: 0 18px 55px rgba(0,0,0,.18);
+      background:#fff;
+    }
+
+    /* background kayu */
+    .bg{
+      position:absolute;
+      inset:0;
+      background: url("sankaku.png") center/cover no-repeat; /* GANTI jika perlu */
+    }
+
+    /* pill SANKAKU */
+    .pill{
+      position:absolute;
+      top: 60px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#fff;
+      border:2px solid #111;
+      border-radius: 10px;
+      padding: 10px 22px;
+      font-weight: 900;
+      box-shadow: 0 8px 0 rgba(0,0,0,.55);
+      cursor:pointer;
+      user-select:none;
+      z-index: 2;
+    }
+    .pill:active{
+      transform:translateX(-50%) translateY(3px);
+      box-shadow: 0 5px 0 rgba(0,0,0,.55);
+    }
+
+    /* card putih */
+    .card{
+      position:absolute;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      width: min(340px, 82%);
+      background: rgba(255,255,255,.95);
+      border-radius: 18px;
+      padding: 26px 20px 18px;
+      text-align:center;
+      box-shadow: 0 12px 30px rgba(0,0,0,.18);
+      cursor:pointer;
+      z-index: 1;
+    }
+
+    .text{
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    /* footer di DALAM card */
+    .card-footer{
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,.25);
+      font-weight: 800;
+      font-size: 14px;
+      color:#111;
+    }
+
+    /* dekor garis kiri */
+    .rays{
+      position:absolute;
+      left: 28px;
+      top: 210px;
+      width: 40px;
+      height: 40px;
+      opacity:.55;
+      background:
+        linear-gradient(135deg, transparent 46%, rgba(0,0,0,.55) 47%, rgba(0,0,0,.55) 49%, transparent 50%) ,
+        linear-gradient(155deg, transparent 46%, rgba(0,0,0,.55) 47%, rgba(0,0,0,.55) 49%, transparent 50%) ,
+        linear-gradient(115deg, transparent 46%, rgba(0,0,0,.55) 47%, rgba(0,0,0,.55) 49%, transparent 50%);
+      background-size: 40px 40px;
+      background-repeat:no-repeat;
+      z-index: 0;
+    }
+
+    /* ✅ tombol kembali kiri bawah */
+    .back-btn{
+      position:absolute;
+      left: 22px;
+      bottom: 22px;
+      width: 62px;
+      height: 62px;
+      border-radius: 999px;
+      border: 2.5px solid #111;
+      background: rgba(255,255,255,.35);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      user-select:none;
+      z-index: 3;
+    }
+    .back-btn svg{
+      width:28px;height:28px;
+      stroke:#111;
+      stroke-width:2.8;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .back-btn:active{
+      transform: translateY(2px);
+    }
+
+    @media (max-width: 768px) {
+  body{
+    padding: 0;
+    background: #000; 
+  }
+
+  .phone{
+    width: 100vw;
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="bg"></div>
+    <div class="rays" aria-hidden="true"></div>
+
+    <!-- klik pill -->
+    <div class="pill" id="goMenu">SANKAKU</div>
+
+    <!-- klik card -->
+    <div class="card" id="goMenu2" role="button" aria-label="Lanjut">
+      <div class="text">
+        Media pembelajaran<br>
+        yang berisi<br>
+        kumpulan kanji N3,<br>
+        dilengkapi dengan<br>
+        cara baca (onyomi &amp;<br>
+        kunyomi), cara<br>
+        menulis, contoh<br>
+        kosakata, serta<br>
+        latihan soal.
+      </div>
+    </div>
+
+    <!-- ✅ tombol kembali -->
+    <button class="back-btn" id="btnBack" aria-label="Kembali">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H7"></path>
+        <path d="M11 6l-6 6 6 6"></path>
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    const goMenu = () => window.location.href = 'menu.html';
+    document.getElementById('goMenu').addEventListener('click', goMenu);
+    document.getElementById('goMenu2').addEventListener('click', goMenu);
+
+    // back ke index
+    document.getElementById('btnBack').addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
