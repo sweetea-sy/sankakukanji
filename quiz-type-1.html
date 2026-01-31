@@ -286,115 +286,113 @@ body{
     </div>
   </div>
 </div>
+
 <script>
   const IMG_WRONG   = 'wrong.webp';
   const IMG_CORRECT = 'correct.webp';
 
-
-const QUESTIONS = [
-  {
-    text: '(「飛び出し注意」)と書いてあります。',
-    options: ['とびだしじゅうい','とびだしちゅうい','とびだししゅうい','とびだしじょうい'],
-    correctIndex: 1
-  },
-  {
-    text: 'この時計は(正確)です。',
-    options: ['せいかく','せっかく','しょうかく','しようかく'],
-    correctIndex: 0
-  },
-  {
-    text: '横断歩道をわたりましょう。',
-    options: ['こうだん','おうだん','かいへん','そうだん'],
-    correctIndex: 1
-  },
-  {
-    text: 'このなべは(鉄)で作られています。',
-    options: ['しつ','ねつ','れつ','てつ'],
-    correctIndex: 3
-  },
-  {
-    text: '(優先)席ではけいたい電話を使わないでください。',
-    options: ['うせん','にゅうせん','ゆうせん','ようせん'],
-    correctIndex: 2
-  },
-  {
-    text: '料金は(降りる)ときにはらってください。',
-    options: ['のりる','ふりる','こりる','おりる'],
-    correctIndex: 3
-  },
-  {
-    text: '(関係者)以外入らないでください。',
-    options: ['かんけいしゃ','かんれんしゃ','けいけんしゃ','かんきょうしゃ'],
-    correctIndex: 0
-  },
-  {
-    text: '(確認)ボタンを押します。',
-    options: ['きにん','かくにん','しょうにん','こうにん'],
-    correctIndex: 1
-  },
-  {
-    text: 'ドアの(横)にスイッチがあります。',
-    options: ['まえ','よこ','たて','となり'],
-    correctIndex: 1
-  },
-  {
-    text: '高速道路から(飛行場)が見えます。',
-    options: ['こうそくろ','ひこうば','くうこう','ひこうじょう'],
-    correctIndex: 3
-  },
-  {
-    text: '駅は(なんばん)ですか。',
-    options: ['何号','向番','何番','向号'],
-    correctIndex: 2
-  },
-  {
-    text: '黄色い(せん)を下がってお待ちください。',
-    options: ['線','信','段','側'],
-    correctIndex: 0
-  },
-  {
-    text: 'あの女優は(ひょうげん)力がある。',
-    options: ['表信','表現','表見','表現'],
-    correctIndex: 3
-  },
-  {
-    text: '社長はそれを(みとめた)。',
-    options: ['定めた','認めた','愛めた','面めた'],
-    correctIndex: 1
-  },
-  {
-    text: 'この電車は（　）駅に止まります。',
-    options: ['毎','次','各','両'],
-    correctIndex: 2
-  },
-  {
-  text: 'あの信号は押しボタン（　）です。',
-  options: ['箱','席','向','式'],
-  correctIndex: 3
-},
-{
-  text: '駐車場はただいま（　）車です。',
-  options: ['両','満','禁','非'],
-  correctIndex: 1
-},
-{
-  text: '1万円以上は、送料（　）料です。',
-  options: ['非','不','無','禁'],
-  correctIndex: 2
-},
-{
-  text: '整理（　）を取ってお待ちください。',
-  options: ['係','箱','路','券'],
-  correctIndex: 3
-},
-{
-  text: 'お会計は料金（　）に入れてください。',
-  options: ['箱','式','鞄','袋'],
-  correctIndex: 0
-}
-
-];
-
+  const QUESTIONS = [
+    {
+      text: '(「飛び出し注意」)と書いてあります。',
+      options: ['とびだしじゅうい','とびだしちゅうい','とびだししゅうい','とびだしじょうい'],
+      correctIndex: 1
+    },
+    {
+      text: 'この時計は(正確)です。',
+      options: ['せいかく','せっかく','しょうかく','しようかく'],
+      correctIndex: 0
+    },
+    {
+      text: '(横断)歩道をわたりましょう。',
+      options: ['こうだん','おうだん','かいへん','そうだん'],
+      correctIndex: 1
+    },
+    {
+      text: 'このなべは(鉄)で作られています。',
+      options: ['しつ','ねつ','れつ','てつ'],
+      correctIndex: 3
+    },
+    {
+      text: '(優先)席ではけいたい電話を使わないでください。',
+      options: ['うせん','にゅうせん','ゆうせん','ようせん'],
+      correctIndex: 2
+    },
+    {
+      text: '料金は(降りる)ときにはらってください。',
+      options: ['のりる','ふりる','こりる','おりる'],
+      correctIndex: 3
+    },
+    {
+      text: '(関係者)以外入らないでください。',
+      options: ['かんけいしゃ','かんれんしゃ','けいけんしゃ','かんきょうしゃ'],
+      correctIndex: 0
+    },
+    {
+      text: '(確認)ボタンを押します。',
+      options: ['きにん','かくにん','しょうにん','こうにん'],
+      correctIndex: 1
+    },
+    {
+      text: 'ドアの(横)にスイッチがあります。',
+      options: ['まえ','よこ','たて','となり'],
+      correctIndex: 1
+    },
+    {
+      text: '高速道路から(飛行場)が見えます。',
+      options: ['こうそくろ','ひこうば','くうこう','ひこうじょう'],
+      correctIndex: 3
+    },
+    {
+      text: '駅は(なんばん)ですか。',
+      options: ['何号','向番','何番','向号'],
+      correctIndex: 2
+    },
+    {
+      text: '黄色い(せん)を下がってお待ちください。',
+      options: ['線','信','段','側'],
+      correctIndex: 0
+    },
+    {
+      text: 'あの女優は(ひょうげん)力がある。',
+      options: ['表信','表現','表見','表現'],
+      correctIndex: 3
+    },
+    {
+      text: '社長はそれを(みとめた)。',
+      options: ['定めた','認めた','愛めた','面めた'],
+      correctIndex: 1
+    },
+    {
+      text: 'この電車は（　）駅に止まります。',
+      options: ['毎','次','各','両'],
+      correctIndex: 2
+    },
+    {
+      text: 'あの信号は押しボタン（　）です。',
+      options: ['箱','席','向','式'],
+      correctIndex: 3
+    },
+    {
+      text: '駐車場はただいま（　）車です。',
+      options: ['両','満','禁','非'],
+      correctIndex: 1
+    },
+    {
+      text: '1万円以上は、送料（　）料です。',
+      options: ['非','不','無','禁'],
+      correctIndex: 2
+    },
+    {
+      text: '整理（　）を取ってお待ちください。',
+      options: ['係','箱','路','券'],
+      correctIndex: 3
+    },
+    {
+      text: 'お会計は料金（　）に入れてください。',
+      options: ['箱','式','鞄','袋'],
+      correctIndex: 0
+    }
+  ];
 
   const LS_KEY_ANS = 'sankaku_quiz_type1_answers';
   const LS_KEY_IDX = 'sankaku_quiz_type1_index';
@@ -469,7 +467,10 @@ const QUESTIONS = [
       `;
 
       row.onclick = () => {
+        // data default
         answers[currentIndex] ??= { attempts: 0, correct: false };
+        answers[currentIndex].attempts = Number.isFinite(answers[currentIndex].attempts) ? answers[currentIndex].attempts : 0;
+
         answers[currentIndex].chosen = i;
         saveAnswers(answers);
         render();
@@ -491,6 +492,9 @@ const QUESTIONS = [
     render();
   };
 
+  // =========================
+  // UPDATED: simpan attemptWin (percobaan menang)
+  // =========================
   btnNext.onclick = () => {
     if (lockNav) return;
 
@@ -502,11 +506,20 @@ const QUESTIONS = [
       return;
     }
 
-    if (!data.correct) data.attempts++;
+    // safety
+    data.attempts = Number.isFinite(data.attempts) ? data.attempts : 0;
 
+    // cek benar/salah dulu
     const isCorrect = data.chosen === q.correctIndex;
 
-    if (isCorrect) data.correct = true;
+    // setiap submit dihitung percobaan (selama belum pernah benar)
+    if (!data.correct) data.attempts++;
+
+    // kalau benar pertama kali, simpan percobaan keberapa dia menang
+    if (isCorrect && !data.correct) {
+      data.correct = true;
+      data.attemptWin = data.attempts; // <-- akan tampil di results
+    }
 
     saveAnswers(answers);
 
