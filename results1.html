@@ -9,7 +9,6 @@
   :root{
     --shadow: 0 18px 55px rgba(0,0,0,.18);
     --stroke:#111;
-    --brown:#8a7566;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -60,24 +59,34 @@
   .title{
     font-weight: 1000;
     font-size: 22px;
-    margin: 6px 0 10px;
+    margin: 6px 0 6px;
     text-align:center;
   }
 
   .meta{
     text-align:center;
     font-weight:900;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* ====== CARD LIST (style seperti gambar 2) ====== */
+  .card{
+    border: 2px solid rgba(0,0,0,.15);
+    border-radius: 14px;
+    overflow:hidden;
+    background: rgba(255,255,255,.45);
+  }
+  .card-head{
+    padding: 10px 12px;
+    font-weight: 1000;
+    background: rgba(0,0,0,.06);
+    border-bottom: 1px solid rgba(0,0,0,.10);
   }
 
   .list{
-    flex:1 1 auto;
-    min-height:0;
+    max-height: 44vh;
     overflow:auto;
     -webkit-overflow-scrolling: touch;
-    padding-right: 2px;
-    border: 2px solid rgba(0,0,0,.15);
-    border-radius: 14px;
   }
 
   .row{
@@ -85,19 +94,23 @@
     align-items:center;
     justify-content:space-between;
     padding: 10px 12px;
-    border-top:1px solid rgba(0,0,0,.12);
+    border-top: 1px solid rgba(0,0,0,.10);
     gap: 10px;
+    background: rgba(255,255,255,.35);
   }
   .row:first-child{ border-top:0; }
 
   .row-left{
-    font-weight: 900;
+    font-weight: 1000;
+    width: 28px;
   }
+
   .row-right{
     display:flex;
     align-items:center;
     gap: 10px;
     font-weight: 900;
+    margin-left:auto;
   }
 
   .pill{
@@ -106,6 +119,7 @@
     border: 2px solid rgba(0,0,0,.18);
     font-size: 12px;
     white-space:nowrap;
+    background: rgba(255,255,255,.6);
   }
 
   .badge{
@@ -115,21 +129,12 @@
     display:grid;
     place-items:center;
     font-weight: 1000;
-    border: 2px solid #111;
+    border: 2px solid rgba(0,0,0,.2);
     background:#fff;
   }
-  .badge.ok{
-    border-color: rgba(0,0,0,.2);
-    background: rgba(34,197,94,.15);
-  }
-  .badge.no{
-    border-color: rgba(0,0,0,.2);
-    background: rgba(239,68,68,.15);
-  }
-  .badge.na{
-    border-color: rgba(0,0,0,.15);
-    background: rgba(0,0,0,.05);
-  }
+  .badge.ok{ background: rgba(34,197,94,.15); }
+  .badge.no{ background: rgba(239,68,68,.15); }
+  .badge.na{ background: rgba(0,0,0,.05); }
 
   .footer{
     padding: 10px 0 0;
@@ -152,7 +157,7 @@
   .actions{
     display:flex;
     gap:10px;
-    margin-top: 10px;
+    margin-top: 12px;
   }
   .btn{
     flex:1;
@@ -164,22 +169,21 @@
     cursor:pointer;
     box-shadow: 0 8px 0 rgba(0,0,0,.55);
   }
-  .btn:active{ transform: translateY(3px); box-shadow: 0 5px 0 rgba(0,0,0,.55); }
+  .btn:active{
+    transform: translateY(3px);
+    box-shadow: 0 5px 0 rgba(0,0,0,.55);
+  }
 
   @media (max-width: 768px) {
-  body{
-    padding: 0;
-    background: #000; 
+    body{ padding: 0; background: #000; }
+    .phone{
+      width: 100vw;
+      height: 100vh;
+      max-height: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
   }
-
-  .phone{
-    width: 100vw;
-    height: 100vh;
-    max-height: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
-}
 </style>
 </head>
 
@@ -194,7 +198,10 @@
       <div class="title">HASIL LATIHAN "一" </div>
       <div class="meta" id="meta">...</div>
 
-      <div class="list" id="list"></div>
+      <div class="card">
+        <div class="card-head" id="rangeTitle">Soal 1 – 0</div>
+        <div class="list" id="list"></div>
+      </div>
 
       <div class="actions">
         <button class="btn" id="btnRetry">Ulangi</button>
@@ -215,72 +222,72 @@
   // =========================
   const QUESTIONS = [
     {
-      text: '「飛び出し注意」と書いてあります。',
+      text: '(「飛び出し注意」)と書いてあります。',
       options: ['とびだしじゅうい','とびだしちゅうい','とびだししゅうい','とびだしじょうい'],
       correctIndex: 1
     },
     {
-      text: 'この時計は正確です。',
+      text: 'この時計は(正確)です。',
       options: ['せいかく','せっかく','しょうかく','しようかく'],
       correctIndex: 0
     },
     {
-      text: '横断歩道をわたりましょう。',
+      text: '(横断)歩道をわたりましょう。',
       options: ['こうだん','おうだん','かいへん','そうだん'],
       correctIndex: 1
     },
     {
-      text: 'このなべは鉄で作られています。',
+      text: 'このなべは(鉄)で作られています。',
       options: ['しつ','ねつ','れつ','てつ'],
       correctIndex: 3
     },
     {
-      text: '優先席ではけいたい電話を使わないでください。',
+      text: '(優先)席ではけいたい電話を使わないでください。',
       options: ['うせん','にゅうせん','ゆうせん','ようせん'],
       correctIndex: 2
     },
     {
-      text: '料金は降りるときにはらってください。',
+      text: '料金は(降りる)ときにはらってください。',
       options: ['のりる','ふりる','こりる','おりる'],
       correctIndex: 3
     },
     {
-      text: '関係者以外入らないでください。',
+      text: '(関係者)以外入らないでください。',
       options: ['かんけいしゃ','かんれんしゃ','けいけんしゃ','かんきょうしゃ'],
       correctIndex: 0
     },
     {
-      text: '確認ボタンを押します。',
+      text: '(確認)ボタンを押します。',
       options: ['きにん','かくにん','しょうにん','こうにん'],
       correctIndex: 1
     },
     {
-      text: 'ドアの横にスイッチがあります。',
+      text: 'ドアの(横)にスイッチがあります。',
       options: ['まえ','よこ','たて','となり'],
       correctIndex: 1
     },
     {
-      text: '高速道路から飛行場が見えます。',
+      text: '高速道路から(飛行場)が見えます。',
       options: ['こうそくろ','ひこうば','くうこう','ひこうじょう'],
       correctIndex: 3
     },
     {
-      text: '駅はなんばんですか。',
+      text: '駅は(なんばん)ですか。',
       options: ['何号','向番','何番','向号'],
       correctIndex: 2
     },
     {
-      text: '黄色いせんを下がってお待ちください。',
+      text: '黄色い(せん)を下がってお待ちください。',
       options: ['線','信','段','側'],
       correctIndex: 0
     },
     {
-      text: 'あの女優はひょうげん力がある。',
+      text: 'あの女優は(ひょうげん)力がある。',
       options: ['表信','表現','表見','表現'],
       correctIndex: 3
     },
     {
-      text: '社長はそれをみとめた。',
+      text: '社長はそれを(みとめた)。',
       options: ['定めた','認めた','愛めた','面めた'],
       correctIndex: 1
     },
@@ -330,9 +337,9 @@
   const answers = loadAnswers();
   const listEl = document.getElementById('list');
 
-  /* =========================
-     HITUNG TOTAL NILAI
-     ========================= */
+  // =========================
+  // TOTAL SCORE
+  // =========================
   let totalScore = 0;
   QUESTIONS.forEach((_, i) => {
     if (answers[i]?.correct) totalScore += 5;
@@ -341,6 +348,26 @@
   document.getElementById('meta').textContent =
     `Jumlah Soal: ${QUESTIONS.length} | Total Nilai: ${totalScore}`;
 
+  document.getElementById('rangeTitle').textContent = `Soal 1 – ${QUESTIONS.length}`;
+
+  // ambil percobaan keberapa baru benar/menang (fleksibel field)
+  function getAttemptWin(data){
+    const v =
+      data?.attemptWin ??
+      data?.attempt ??
+      data?.tries ??
+      data?.attemptCount ??
+      data?.tryCount ??
+      null;
+
+    if (typeof v === 'number' && isFinite(v) && v > 0) return v;
+    if (typeof v === 'string' && v.trim() && !isNaN(Number(v))) return Number(v);
+    return null;
+  }
+
+  // =========================
+  // RENDER LIST
+  // =========================
   QUESTIONS.forEach((_, i) => {
     const data = answers[i];
     const score = data?.correct ? 5 : 0;
@@ -348,6 +375,8 @@
     let status = 'na';
     if (data?.correct) status = 'ok';
     else if (data) status = 'no';
+
+    const attemptWin = getAttemptWin(data);
 
     const row = document.createElement('div');
     row.className = 'row';
@@ -359,6 +388,10 @@
     const right = document.createElement('div');
     right.className = 'row-right';
 
+    const pillTry = document.createElement('div');
+    pillTry.className = 'pill';
+    pillTry.textContent = `Percobaan: ${attemptWin ?? '–'}`;
+
     const pillScore = document.createElement('div');
     pillScore.className = 'pill';
     pillScore.textContent = `Nilai: ${score}`;
@@ -367,15 +400,14 @@
     badge.className = `badge ${status}`;
     badge.textContent = data?.correct ? '✓' : data ? '✕' : '–';
 
+    right.appendChild(pillTry);
     right.appendChild(pillScore);
     right.appendChild(badge);
 
     row.appendChild(left);
     row.appendChild(right);
-
     listEl.appendChild(row);
   });
-
 
   document.getElementById('btnRetry').addEventListener('click', () => {
     localStorage.removeItem(LS_KEY_ANS);
